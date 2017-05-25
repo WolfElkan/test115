@@ -1,0 +1,19 @@
+<h1>Users Index</h1>
+<table>
+	<thead>
+		<th>Username</th>
+		<th>Password</th>
+		<th>Actions</th>
+	</thead>
+	<tr ng-repeat='user in user_index'>
+		<td>{{user.username}}</td>
+		<td>
+			<span ng-if='isbcrypt(user.password)' title='{{user.password}}'>&#x1f512;</span>
+			<span ng-if='!isbcrypt(user.password)'>{{user.password}}</span>
+		</td>
+		<td>
+			<a href='#' ng-click='user_delete(user._id)'>Delete</a>
+		</td>
+	</tr>
+</table>
+<button ng-click='print()'>Shortcut</button>

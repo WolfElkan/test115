@@ -1,0 +1,16 @@
+<h1>Pachyderms Index</h1>
+<table>
+	<thead>
+		<th>Field</th>
+		<th>Actions</th>
+	</thead>
+	<tr ng-repeat='elephant in pachyderms'>
+		<td>{{elephant.field}}</td>
+		<td>
+			<a href='#!/pachyderms/show/{{elephant._id}}'>Show</a>
+			<a href='#!/pachyderms/edit/{{elephant._id}}'>Edit</a>
+			<a href='#' ng-click='delete(elephant._id)'>Delete</a>
+		</td>
+	</tr>
+</table>
+<button ng-click='print()'>Show All</button>

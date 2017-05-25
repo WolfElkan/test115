@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+	<head>
+		<title>test115</title>
+		<link rel='stylesheet' type='text/css' href='static/style.css'>
+		<script type='text/javascript' src='angular/angular.js'></script>
+		<script type='text/javascript' src='angular-route/angular-route.js'></script>
+		<script type='text/javascript' src='angular-cookies/angular-cookies.js'></script>
+		<script src='app.js'></script>
+		<script src='assets/User/UserFactory.js'></script>
+		<script src='assets/User/UsersController.js'></script>
+		<script src='assets/Elephant/ElephantFactory.js'></script>
+		<script src='assets/Elephant/edit/EditElephant.js'></script>
+		<script src='assets/Elephant/index/IndexElephant.js'></script>
+		<script src='assets/Elephant/new/NewElephant.js'></script>
+		<script src='assets/Elephant/show/ShowElephant.js'></script>
+		<script src='assets/ValidService.js'></script>
+		<script src='assets/FindService.js'></script>
+	</head>
+	<body>
+		<h1 ng-if='false'>Error: Cannot Run Angular</h1>
+		<div ng-view><!-- Partials load here --></div>
+		<a href='#!/pachyderms'>Home</a>
+		<a href='#!/pachyderms/new'>New</a>
+		<a href='#!/users'>Users</a>
+	</body>
+</html>

@@ -9,12 +9,6 @@ app.factory('UserFactory',['$http','$valid','$find',function($http,$valid,$find)
 		$valid.Confirm('pw_conf','password','Passwords do not match'),
 	]
 
-	// factory.register = function(user) {
-	// 	// var obj = $valid.ate(factory,user)
-	// 	user.action = 'register'
-	// 	return $http.post('/users',user)
-	// }
-
 	factory.register = function(user,callback) {
 		user.action = 'register'
 		var obj = $valid.ate(factory,user)
@@ -55,12 +49,6 @@ app.factory('UserFactory',['$http','$valid','$find',function($http,$valid,$find)
 			callback(obj)
 		}
 	}
-
-	// factory.login = function(user) {
-	// 	// var obj = $valid.ate()
-	// 	user.action = 'login'
-	// 	return $http.post('/users',user)
-	// }
 
 	factory.get = function(callback) {
 		if (typeof(callback) == 'function') {

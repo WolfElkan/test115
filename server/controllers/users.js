@@ -18,19 +18,19 @@ var data = {
 users.login = function(request, response) {
 	console.log('server: login')
 	data.request = 'login'
-	User.find({username: request.body.username},function(error,result) {
+	var user = request.body	
+	User.findOne({username: user.username},function(error,found_user) {
 		if (error) {
 			data.dberror = error
 			response.json(data)
 		} else {
-			var user = result[0]
-			data.account = Boolean(user)
-			if (user) {
-				user = equip(user)
-				if (user.check(request.body.password)) {
+			data.account = Boolean(found_user)
+			if (found_user) {
+				found_user = equip(found_user)
+				if (found_user.check(user.password)) {
 					console.log('server: password correct')
 					data.success = true
-					data.user_id = user._id
+					data.user_id = found_user._id
 					data.invalid = false
 					response.json(data)
 				} else {
@@ -103,9 +103,9 @@ users.update = function(request, response) {
 	var patch = request.body.patch
 	User.update(query,patch,function(error,specs) {
 		if (error) {
-			console.log('server:',500,error)
+			console.log('server: dberror',error)
 		} else {
-			console.log('server:',201.5)
+			console.log('server: user updated')
 			response.json(specs)
 		}
 	})
@@ -115,9 +115,9 @@ users.delete = function(request, response) {
 	var id = request.params.id
 	User.remove({'_id':id},function(error,specs) {
 		if (error) {
-			console.log('server:',500,error)
+			console.log('server: dberror',error)
 		} else {
-			console.log('server:',201.9)
+			console.log('server: user deleted')
 			response.json(specs)
 		}
 	})

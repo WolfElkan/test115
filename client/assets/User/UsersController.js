@@ -12,9 +12,10 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 		$scope.user_index = content
 	})
 
-	$scope.user_log = {}
+	// $scope.user_log = {}
 	$scope.login = function() {
-		UserFactory.login($scope.user_log).then(function(returned) {
+		var obj = UserFactory.login($scope.user_log)
+		obj.promise.then(function(returned) {
 			if (returned.data.account) {
 				if (returned.data.success) {
 					$cookies.put('user_id',returned.data.user_id)
@@ -22,12 +23,18 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 					$location.url('/')
 				} else {
 					console.log('cxr: password incorrect')
+					obj.errors.push({'field':'password','error':'Your password is incorrect.'})
+					$valid.blame($scope,obj,'log_errors')
 				}
 			} else {
 				console.log('cxr: no account')
+				obj.errors.push({'field':'username','error':'You do not have an account. Please register.'})
+				$valid.blame($scope,obj,'log_errors')
+				$scope.user_reg.username = $scope.user_log.username
+				$scope.user_log = {}
 			}
 		})
-		$scope.user_log = {}
+		// $scope.user_log = {}
 	}
 
 	$scope.register = function() {
@@ -36,7 +43,7 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 			obj.promise.then(function(returned) {
 				if (returned.data.account) {
 					obj.valid = false
-					obj.errors.push({'field':'username','error':'You already have an account. Please register.'})
+					obj.errors.push({'field':'username','error':'You already have an account. Please log in.'})
 					$valid.blame($scope,obj,'reg_errors')
 					$scope.user_log.username = $scope.user_reg.username
 					$scope.user_reg = {}
@@ -68,7 +75,7 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 	}
 
 	$scope.print = function() {
-		console.log($cookies.getAll())
+		console.log('Cookie:',$cookies.getAll())
 	}
 
 }])

@@ -12,14 +12,16 @@ var UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save',function(next) {
 	this.password = bcrypt.hashSync(this.password,bcrypt.genSaltSync(8))
-	// console.log('model :',this)
 	next()
 })
 
 function equip(user) {
-	// user = user[0]
 	user.check = function(password) {
-		return bcrypt.compareSync(password, user.password)
+		if (password) {
+			return bcrypt.compareSync(password, user.password)
+		} else {
+			return false
+		}
 	}
 	return user
 }

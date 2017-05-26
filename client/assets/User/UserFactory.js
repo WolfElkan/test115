@@ -10,13 +10,15 @@ app.factory('UserFactory',['$http','$valid','$find',function($http,$valid,$find)
 	]
 
 	factory.login = function(user) {
+		var obj = $valid.ate()
 		user.action = 'login'
-		return $http.post('/users',user)
+		obj.promise = $http.post('/users',user)
+		console.log(obj)
+		return obj
 	}
 
 	factory.register = function(user) {
 		var obj = $valid.ate(factory,user)
-		console.log(obj)
 		if (obj.valid) {
 			user.action = 'register'
 			obj.promise = $http.post('/users',user)

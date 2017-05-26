@@ -21,6 +21,7 @@
 	<body>
 		<div ng-controller='UsersController'>
 			<a href="#" ng-click='logout()' ng-if='isLoggedIn()'>Log Out</a>
+			<button ng-click='print()'>Cookie</button>
 		</div>
 		<h1 ng-if='false'>Error: Cannot Run Angular</h1>
 		<div ng-view><!-- Partials load here --></div>

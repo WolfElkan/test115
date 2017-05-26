@@ -97,9 +97,11 @@ app.service('$valid',function() {
 		return self
 	}
 
-
 	// Checks all given validations.  Returns error object
 	service.ate = function(factory,form) {
+		if (!factory) {
+			return {valid:true,errors:[]}
+		}
 		var validations = factory.validations
 		if (!validations || !validations[0]) {
 			return {valid:true,errors:[]}
@@ -126,11 +128,11 @@ app.service('$valid',function() {
 	return service
 
 })
-
+// // Template for new Validation types
 // service.New = function(field,error,other_args) {
 // 	var self = new Validation(field,error)
 // 	self.valid = function(form) {
-// 		// calculation
+// 		// body...
 // 	}
 // 	return self
 // }

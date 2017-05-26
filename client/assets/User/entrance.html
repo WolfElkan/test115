@@ -4,14 +4,17 @@
 		<tr>
 			<td>Username:</td>
 			<td><input type='text' ng-model='user_reg.username'></td>
+			<td><span class='error' ng-bind='reg_errors.username'></span></td>
 		</tr>
 		<tr>
 			<td>Password:</td>
 			<td><input type='password' ng-model='user_reg.password'></td>
+			<td><span class='error' ng-bind='reg_errors.password'></span></td>
 		</tr>
 		<tr>
 			<td>Confirm Password:</td>
 			<td><input type='password' ng-model='user_reg.pw_conf'></td>
+			<td><span class='error' ng-bind='reg_errors.pw_conf'></span></td>
 		</tr>
 	</table>
 	<button ng-click='register()'>Register</button>
@@ -22,10 +25,12 @@
 		<tr>
 			<td>Username:</td>
 			<td><input type='text' ng-model='user_log.username'></td>
+			<td><span class='error' ng-bind='log_errors.username'></span></td>
 		</tr>
 		<tr>
 			<td>Password:</td>
 			<td><input type='password' ng-model='user_log.password'></td>
+			<td><span class='error' ng-bind='log_errors.password'></span></td>
 		</tr>
 	</table>
 	<button ng-click='login()'>Log In</button>

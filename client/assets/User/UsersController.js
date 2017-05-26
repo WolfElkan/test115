@@ -1,6 +1,10 @@
 app.controller('UsersController',['$scope','$location','$cookies','UserFactory','$valid',function($scope,$location,$cookies,UserFactory,$valid) {
 
-	if (/[0-9a-f]{24}/.exec($cookies.get('user_id'))) {
+	$scope.isLoggedIn = function() {
+		return Boolean(/[0-9a-f]{24}/.exec($cookies.get('user_id')))
+	}
+
+	if ($scope.isLoggedIn()) {
 		$location.url('/')
 	}
 
@@ -28,15 +32,24 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 
 	$scope.register = function() {
 		var obj = UserFactory.register($scope.user_reg)
-		if (obj.promise) {
+		if (obj.valid) {
 			obj.promise.then(function(returned) {
-				$cookies.put('user_id',returned.data.user_id)
-				// $cookies.put('sescode',returned.data.sescode)
-				$location.url('/')
+				if (returned.data.account) {
+					obj.valid = false
+					obj.errors.push({'field':'username','error':'You already have an account. Please register.'})
+					$valid.blame($scope,obj,'reg_errors')
+					$scope.user_log.username = $scope.user_reg.username
+					$scope.user_reg = {}
+				} else {
+					$cookies.put('user_id',returned.data.user_id)
+					// $cookies.put('sescode',returned.data.sescode)
+					$location.url('/')
+				}
 			})
+		} else {
+			$valid.blame($scope,obj,'reg_errors')
 		}
 	}
-
 
 	$scope.logout = function() {
 		console.log('logging out...')
@@ -45,16 +58,12 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 			$location.url('/')
 	}
 
-	$scope.isLoggedIn = function() {
-		return Boolean($cookies.get('user_id'))
-	}
-
 	$scope.isbcrypt = function(pw) {
 		var bcrypt = /^\$2[ay]?\$\d{2}\$[./0-9A-Za-z]{53}$/
 		return Boolean(bcrypt.exec(pw))
 	}
 
-	$scope.user_delete = function(id) {
+	$scope.delete = function(id) {
 		UserFactory.delete(id)
 	}
 

@@ -3,7 +3,11 @@ app.factory('UserFactory',['$http','$valid','$find',function($http,$valid,$find)
 	var factory = {}
 	var content = []
 
-	factory.validations = []
+	factory.validations = [
+		$valid.Present('username'),
+		$valid.Present('password'),
+		$valid.Confirm('pw_conf','password','Passwords do not match'),
+	]
 
 	factory.login = function(user) {
 		user.action = 'login'
@@ -12,6 +16,7 @@ app.factory('UserFactory',['$http','$valid','$find',function($http,$valid,$find)
 
 	factory.register = function(user) {
 		var obj = $valid.ate(factory,user)
+		console.log(obj)
 		if (obj.valid) {
 			user.action = 'register'
 			obj.promise = $http.post('/users',user)

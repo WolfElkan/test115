@@ -12,6 +12,16 @@ app.service('$valid',function() {
 		}
 	}
 
+	// Checks whether data has been entered in specified field
+	service.Present = function(field,error) {
+		error = error ? error : 'Please enter a ' + field
+		var self = new Validation(field,error)
+		self.valid = function(form) {
+			return Boolean(form[field])
+		}
+		return self
+	}
+
 	// Checks whether form data in specified field matches a given regular expression
 	service.Regular = function(field,regex,error) {
 		var self = new Validation(field,error)
@@ -102,17 +112,25 @@ app.service('$valid',function() {
 	}
 
 	// Displays errors from error object in scope
-	service.blame = function($scope,obj,form='errors') {
+	service.blame = function($scope,obj,form='errors',sep=' ') {
 		$scope[form] = {}
 		var errors = obj.errors
 		for (var i = 0; i < errors.length; i++) {
 			var error = errors[i]
 			var field = error.field
 			$scope[form][field] = $scope[form][field] ? $scope[form][field] : ''
-			$scope[form][field] += ' ' + error.error
+			$scope[form][field] += sep + error.error
 		}
 	}
 
 	return service
 
 })
+
+// service.New = function(field,error,other_args) {
+// 	var self = new Validation(field,error)
+// 	self.valid = function(form) {
+// 		// calculation
+// 	}
+// 	return self
+// }

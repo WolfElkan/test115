@@ -62,7 +62,7 @@ users.register = function(request,response) {
 			})
 			if (valid(new_user)) {
 				console.log('server: creating account')
-				new_user.save(function(error,result) {
+				new_user.save(function(error,saved_user) {
 					if (error) {
 						console.log('server: database error')
 						data.dberror = error
@@ -70,6 +70,7 @@ users.register = function(request,response) {
 					} else {
 						console.log('server: account created')
 						data.success = true
+						data.user_id = saved_user._id
 						response.json(data)
 					}
 				})
@@ -83,17 +84,16 @@ users.register = function(request,response) {
 }
 
 users.index = function(request, response) {
-	console.log('server: index')
-	User.find({},function(error,result) {
-		console.log('server:',error,result)
-		response.json({'users':result})
+	console.log('server: users')
+	User.find({},function(error,all_users) {
+		response.json({'users':all_users})
 	})
 }
 
 users.show = function(request, response) {
 	var id = request.params.id
-	User.find({'_id':id},function(error,result) {
-		response.json(result)
+	User.find({'_id':id},function(error,user) {
+		response.json(user)
 	})
 }
 
@@ -101,24 +101,24 @@ users.update = function(request, response) {
 	var id = request.params.id
 	var query = request.body.query
 	var patch = request.body.patch
-	User.update(query,patch,function(error,result) {
+	User.update(query,patch,function(error,specs) {
 		if (error) {
 			console.log('server:',500,error)
 		} else {
 			console.log('server:',201.5)
-			response.json(result)
+			response.json(specs)
 		}
 	})
 }
 
 users.delete = function(request, response) {
 	var id = request.params.id
-	User.remove({'_id':id},function(error,result) {
+	User.remove({'_id':id},function(error,specs) {
 		if (error) {
 			console.log('server:',500,error)
 		} else {
 			console.log('server:',201.9)
-			response.json(result)
+			response.json(specs)
 		}
 	})
 }

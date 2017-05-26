@@ -26,36 +26,14 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 		$scope.user_log = {}
 	}
 
-	// $scope.user_reg = {}
-	// $scope.register = function() {
-	// 	var obj = UserFactory.register($scope.user_reg)
-	// 	if (obj.valid) {
-	// 		obj.promise.then(function(returned) {
-	// 			if (returned.data.success) {
-	// 				$cookies.put('user_id',returned.data.user_id)
-	// 				// $cookies.put('sescode',obj.data.sescode)
-	// 				$location.url('/')		
-	// 				$scope.user_reg = {}
-	// 			} else {
-	// 				if (obj.data.account) {
-	// 					obj.valid = false
-	// 					obj.errors.push({'field':'username','error':'You already have an account'})
-	// 				}
-	// 				$valid.blame($scope,obj,'reg_errors')
-	// 				if (obj.data.account) {
-	// 					$scope.user_log.username = $scope.user_reg.username
-	// 					$scope.user_reg = {}
-	// 				}
-	// 			}
-	// 		})
-	// 	} else {
-	// 		$valid.blame($scope,obj,'reg_errors')
-	// 	}
-	// }
 	$scope.register = function() {
 		var obj = UserFactory.register($scope.user_reg)
 		if (obj.promise) {
-			obj.promise.then()
+			obj.promise.then(function(returned) {
+				$cookies.put('user_id',returned.data.user_id)
+				// $cookies.put('sescode',returned.data.sescode)
+				$location.url('/')
+			})
 		}
 	}
 

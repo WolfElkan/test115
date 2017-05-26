@@ -9,22 +9,58 @@ app.factory('UserFactory',['$http','$valid','$find',function($http,$valid,$find)
 		$valid.Confirm('pw_conf','password','Passwords do not match'),
 	]
 
-	factory.login = function(user) {
-		var obj = $valid.ate()
-		user.action = 'login'
-		obj.promise = $http.post('/users',user)
-		console.log(obj)
-		return obj
-	}
+	// factory.register = function(user) {
+	// 	// var obj = $valid.ate(factory,user)
+	// 	user.action = 'register'
+	// 	return $http.post('/users',user)
+	// }
 
-	factory.register = function(user) {
+	factory.register = function(user,callback) {
+		user.action = 'register'
 		var obj = $valid.ate(factory,user)
 		if (obj.valid) {
-			user.action = 'register'
-			obj.promise = $http.post('/users',user)
+			$http.post('/users',user).then(function(returned) {
+				if (returned.data.account) {
+					obj.valid = false
+					obj.errors.push({'field':'username','error':'You already have an account'})
+					obj.move = true					
+				} else if (returned.data.success) {
+					obj.user_id = returned.data.user_id
+				}
+				callback(obj)
+			})
+		} else {
+			callback(obj)
 		}
-		return obj
 	}
+
+	factory.login = function(user,callback) {
+		user.action = 'login'
+		var obj = $valid.ate()
+		if (obj.valid) {
+			$http.post('/users',user).then(function(returned) {
+				if (!returned.data.account) {
+					obj.valid = false
+					obj.errors.push({'field':'username','error':'You do not have an account'})
+					obj.move = true
+				} else if (returned.data.invalid) {
+					obj.valid = false
+					obj.errors.push({'field':'password','error':'Your password is incorrect'})
+				} else if (returned.data.success) {
+					obj.user_id = returned.data.user_id
+				}
+				callback(obj)
+			})
+		} else {
+			callback(obj)
+		}
+	}
+
+	// factory.login = function(user) {
+	// 	// var obj = $valid.ate()
+	// 	user.action = 'login'
+	// 	return $http.post('/users',user)
+	// }
 
 	factory.get = function(callback) {
 		if (typeof(callback) == 'function') {

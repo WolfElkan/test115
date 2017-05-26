@@ -15,37 +15,6 @@ var data = {
 //	'sescode' : null,
 }
 
-users.login = function(request, response) {
-	console.log('server: login')
-	data.request = 'login'
-	var user = request.body	
-	User.findOne({username: user.username},function(error,found_user) {
-		if (error) {
-			data.dberror = error
-			response.json(data)
-		} else {
-			data.account = Boolean(found_user)
-			if (found_user) {
-				found_user = equip(found_user)
-				if (found_user.check(user.password)) {
-					console.log('server: password correct')
-					data.success = true
-					data.user_id = found_user._id
-					data.invalid = false
-					response.json(data)
-				} else {
-					console.log('server: password incorrect')
-					data.invalid = true
-					response.json(data)
-				}
-			} else {
-				console.log('server: no account')
-				response.json(data)
-			}
-		}
-	})
-}
-
 users.register = function(request,response) {
 	console.log('server: register')
 	data.request = 'register'
@@ -77,6 +46,37 @@ users.register = function(request,response) {
 			} else {
 				console.log('server: validation error')
 				data.invalid = true
+				response.json(data)
+			}
+		}
+	})
+}
+
+users.login = function(request, response) {
+	console.log('server: login')
+	data.request = 'login'
+	var user = request.body	
+	User.findOne({username: user.username},function(error,found_user) {
+		if (error) {
+			data.dberror = error
+			response.json(data)
+		} else {
+			data.account = Boolean(found_user)
+			if (found_user) {
+				found_user = equip(found_user)
+				if (found_user.check(user.password)) {
+					console.log('server: password correct')
+					data.success = true
+					data.user_id = found_user._id
+					data.invalid = false
+					response.json(data)
+				} else {
+					console.log('server: password incorrect')
+					data.invalid = true
+					response.json(data)
+				}
+			} else {
+				console.log('server: no account')
 				response.json(data)
 			}
 		}

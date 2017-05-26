@@ -99,14 +99,15 @@ app.service('$valid',function() {
 
 	// Checks all given validations.  Returns error object
 	service.ate = function(factory,form) {
-		if (!factory) {
-			return {valid:true,errors:[]}
-		}
-		var validations = factory.validations
-		if (!validations || !validations[0]) {
-			return {valid:true,errors:[]}
-		}
+		var validations
 		var obj = {valid:true,errors:[]}
+		if (factory && typeof(factory) == 'array') {
+			validations = factory
+		} else if (!factory || !factory.validations || !factory.validations[0]) {
+			return obj
+		} else {
+			validations = factory.validations
+		}
 		for (var i = 0; i < validations.length; i++) {
 			obj = validations[i].check(form,obj)
 		}

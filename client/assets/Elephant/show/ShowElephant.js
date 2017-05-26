@@ -1,4 +1,6 @@
-app.controller('ShowElephant',['$scope','$location','$routeParams','$find','ElephantFactory',function($scope,$location,$routeParams,$find,ElephantFactory,) {
+app.controller('ShowElephant',['$scope','$location','$routeParams','$find','ElephantFactory','$secure',function($scope,$location,$routeParams,$find,ElephantFactory,) {
+
+	$secure.authenticate()
 
 	var id = $routeParams.id
 

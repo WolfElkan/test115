@@ -14,10 +14,14 @@
 		<script src='assets/Elephant/index/IndexElephant.js'></script>
 		<script src='assets/Elephant/new/NewElephant.js'></script>
 		<script src='assets/Elephant/show/ShowElephant.js'></script>
+		<script src='assets/SecureService.js'></script>
 		<script src='assets/ValidService.js'></script>
 		<script src='assets/FindService.js'></script>
 	</head>
 	<body>
+		<div ng-controller='UsersController'>
+			<a href="#" ng-click='logout()' ng-if='isLoggedIn()'>Log Out</a>
+		</div>
 		<h1 ng-if='false'>Error: Cannot Run Angular</h1>
 		<div ng-view><!-- Partials load here --></div>
 		<a href='#!/pachyderms'>Home</a>

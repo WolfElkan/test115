@@ -1,4 +1,6 @@
-app.controller('NewElephant',['$scope','$location','$routeParams','$valid','ElephantFactory',function($scope,$location,$routeParams,$valid,ElephantFactory,) {
+app.controller('NewElephant',['$scope','$location','$routeParams','$valid','ElephantFactory','$secure',function($scope,$location,$routeParams,$valid,ElephantFactory,) {
+
+	$secure.authenticate()
 
 	$scope.elephant = {}
 

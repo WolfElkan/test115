@@ -64,11 +64,11 @@ users.register = function(request,response) {
 				console.log('server: creating account')
 				new_user.save(function(error,result) {
 					if (error) {
-						console.log('server:',500,error)
+						console.log('server: database error')
 						data.dberror = error
 						response.json(data)
 					} else {
-						console.log('server:',201)
+						console.log('server: account created')
 						data.success = true
 						response.json(data)
 					}

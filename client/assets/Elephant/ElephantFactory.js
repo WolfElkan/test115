@@ -1,4 +1,6 @@
-app.factory('ElephantFactory',['$http','$find','$valid',function($http,$find,$valid) {
+app.factory('ElephantFactory',['$http','$find','$valid','$secure',function($http,$find,$valid,$secure) {
+
+	$secure.authenticate()
 
 	var factory = {}
 	var content = []

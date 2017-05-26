@@ -1,4 +1,6 @@
-app.controller('IndexElephant',['$scope','$location','ElephantFactory',function($scope,$location,ElephantFactory,) {
+app.controller('IndexElephant',['$scope','$location','ElephantFactory','$secure',function($scope,$location,ElephantFactory,$secure) {
+
+	$secure.authenticate()
 
 	ElephantFactory.get(function(content) {
 		$scope.pachyderms = content

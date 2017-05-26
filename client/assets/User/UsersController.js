@@ -1,15 +1,18 @@
-app.controller('UsersController',['$scope','$location','$cookies','UserFactory',function($scope,$location,$cookies,UserFactory,) {
+app.controller('UsersController',['$scope','$location','$cookies','UserFactory','$valid',function($scope,$location,$cookies,UserFactory,$valid) {
 
-	console.log('UsersController')
+	if (/[0-9a-f]{24}/.exec($cookies.get('user_id'))) {
+		$location.url('/')
+	}
+
+	UserFactory.get(function(content) {
+		$scope.user_index = content
+	})
 
 	$scope.user_log = {}
 	$scope.login = function() {
-		console.log('cxr: login')
 		UserFactory.login($scope.user_log).then(function(returned) {
-			console.log(returned.data)
 			if (returned.data.account) {
 				if (returned.data.success) {
-					console.log('cxr: password correct')
 					$cookies.put('user_id',returned.data.user_id)
 					// $cookies.put('sescode',returned.data.sescode)
 					$location.url('/')
@@ -23,27 +26,49 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 		$scope.user_log = {}
 	}
 
-	$scope.user_reg = {}
+	// $scope.user_reg = {}
+	// $scope.register = function() {
+	// 	var obj = UserFactory.register($scope.user_reg)
+	// 	if (obj.valid) {
+	// 		obj.promise.then(function(returned) {
+	// 			if (returned.data.success) {
+	// 				$cookies.put('user_id',returned.data.user_id)
+	// 				// $cookies.put('sescode',obj.data.sescode)
+	// 				$location.url('/')		
+	// 				$scope.user_reg = {}
+	// 			} else {
+	// 				if (obj.data.account) {
+	// 					obj.valid = false
+	// 					obj.errors.push({'field':'username','error':'You already have an account'})
+	// 				}
+	// 				$valid.blame($scope,obj,'reg_errors')
+	// 				if (obj.data.account) {
+	// 					$scope.user_log.username = $scope.user_reg.username
+	// 					$scope.user_reg = {}
+	// 				}
+	// 			}
+	// 		})
+	// 	} else {
+	// 		$valid.blame($scope,obj,'reg_errors')
+	// 	}
+	// }
 	$scope.register = function() {
-		console.log('cxr: register')
-		UserFactory.register($scope.user_reg).then(function(returned) {
-			console.log('cxr:',returned)
-		})
-		$location.url('/users')
-		$scope.user_reg = {}
+		var obj = UserFactory.register($scope.user_reg)
+		if (obj.promise) {
+			obj.promise.then()
+		}
 	}
 
-	$scope.user_index = UserFactory.all()
-	UserFactory.load().then(function(returned) {
-		$scope.user_index = returned.data.users
-	})
 
 	$scope.logout = function() {
-		console.log('cxr: logging out...')
+		console.log('logging out...')
 			$cookies.remove('user_id')
 			// $cookies.remove('sescode')
-			console.log($cookies.get('user_id'))
 			$location.url('/')
+	}
+
+	$scope.isLoggedIn = function() {
+		return Boolean($cookies.get('user_id'))
 	}
 
 	$scope.isbcrypt = function(pw) {
@@ -56,7 +81,7 @@ app.controller('UsersController',['$scope','$location','$cookies','UserFactory',
 	}
 
 	$scope.print = function() {
-		
+		console.log($cookies.getAll())
 	}
 
 }])
